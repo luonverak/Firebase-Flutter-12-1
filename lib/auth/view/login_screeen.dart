@@ -13,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   final email = TextEditingController();
   final password = TextEditingController();
   final controller = Get.put(UserController());
+  RxBool check = true.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,15 +50,26 @@ class LoginScreen extends StatelessWidget {
                 controller: email,
                 hintText: 'Enter Email',
                 prefixIcon: Icons.email,
+                obscureText: false,
               ),
               const SizedBox(
                 height: 20,
               ),
-              InputField(
-                controller: password,
-                hintText: 'Enter Password',
-                prefixIcon: Icons.lock,
-                suffixIcon: Icons.visibility_off,
+              Obx(
+                () => InputField(
+                  controller: password,
+                  hintText: 'Enter Password',
+                  prefixIcon: Icons.lock,
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      check.value = !check.value;
+                    },
+                    icon: check.value == true
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.remove_red_eye),
+                  ),
+                  obscureText: check.value,
+                ),
               ),
               const SizedBox(
                 height: 50,
@@ -90,11 +102,14 @@ class LoginScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: Image.asset(
-                      'asset/icons/new.png',
+                  GestureDetector(
+                    onTap: () async => controller.signInWithGoogle(),
+                    child: SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: Image.asset(
+                        'asset/icons/new.png',
+                      ),
                     ),
                   ),
                   SizedBox(

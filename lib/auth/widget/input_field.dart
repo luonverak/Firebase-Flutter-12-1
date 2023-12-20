@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  InputField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    this.prefixIcon,
-    this.suffixIcon,
-  });
+  InputField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.obscureText});
   var controller = TextEditingController();
   var hintText;
   IconData? prefixIcon;
-  IconData? suffixIcon;
+  IconButton? suffixIcon;
+  bool? obscureText = true;
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -20,8 +21,9 @@ class InputField extends StatelessWidget {
         border: OutlineInputBorder(),
         hintText: hintText,
         prefixIcon: Icon(prefixIcon),
-        suffixIcon: Icon(suffixIcon),
+        suffixIcon: suffixIcon,
       ),
+      obscureText: obscureText!,
     );
   }
 }

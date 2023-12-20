@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_flutter/auth/model/user_model.dart';
+import 'package:firebase_flutter/home/home_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../view/login_screeen.dart';
 
 class UserController extends GetxController {
   Future<void> createUser(UserModel model) async {
@@ -34,6 +39,7 @@ class UserController extends GetxController {
         password: model.password,
       );
       if (credential.user != null) {
+        Get.to(HomeScreen());
         Get.snackbar('Success', 'Account login success');
       }
     } on FirebaseAuthException catch (e) {
@@ -46,5 +52,39 @@ class UserController extends GetxController {
       }
     }
     update();
+  }
+
+  Future onCheckUser() async {
+    Future.delayed(const Duration(seconds: 2)).then((value) {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user == null) {
+          Get.offAll(LoginScreen());
+        } else {
+          Get.offAll(HomeScreen());
+        }
+      });
+    });
+    update();
+  }
+
+  Future logoutUser() async {
+    Future.delayed(const Duration(seconds: 2)).then(
+      (value) => FirebaseAuth.instance.signOut(),
+    );
+    update();
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

@@ -12,7 +12,7 @@ class RegisterScreen extends StatelessWidget {
   final password = TextEditingController();
   final cf_password = TextEditingController();
   final controller = Get.put(UserController());
-
+  RxBool check = true.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,24 +58,45 @@ class RegisterScreen extends StatelessWidget {
                 controller: email,
                 hintText: 'Enter Email',
                 prefixIcon: Icons.email,
+                obscureText: false,
               ),
               const SizedBox(
                 height: 20,
               ),
-              InputField(
-                controller: password,
-                hintText: 'Enter Password',
-                prefixIcon: Icons.lock,
-                suffixIcon: Icons.visibility_off,
+              Obx(
+                () => InputField(
+                  controller: password,
+                  hintText: 'Enter Password',
+                  prefixIcon: Icons.lock,
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      check.value = !check.value;
+                    },
+                    icon: check.value == true
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.remove_red_eye),
+                  ),
+                  obscureText: check.value,
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              InputField(
-                controller: cf_password,
-                hintText: 'Confirm Password',
-                prefixIcon: Icons.lock,
-                suffixIcon: Icons.visibility_off,
+              Obx(
+                () => InputField(
+                  controller: cf_password,
+                  hintText: 'Confirm Password',
+                  prefixIcon: Icons.lock,
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      check.value = !check.value;
+                    },
+                    icon: check.value == true
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.remove_red_eye),
+                  ),
+                  obscureText: check.value,
+                ),
               ),
               const SizedBox(
                 height: 50,
