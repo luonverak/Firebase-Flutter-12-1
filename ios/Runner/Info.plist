@@ -12,8 +12,26 @@
 					<!-- TODO Replace this value: -->
 					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 					<string>com.googleusercontent.apps.549669177792-8s4kljbtujts2uols5imie9meo4sleph</string>
+					<string>fb880834253739552</string>
 				</array>
 			</dict>
+		</array>
+		<key>FacebookAppID</key>
+		<string>880834253739552</string>
+		<key>FacebookClientToken</key>
+		<string>ae6568aa116cd0f9e4d2f628423db018</string>
+		<key>FacebookDisplayName</key>
+		<string>AppYear3</string>
+		<key>FacebookAutoLogAppEventsEnabled</key>
+		<string>TRUE</string>
+		<key>FacebookAdvertiserIDCollectionEnabled</key>
+		<string>TRUE</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
+			<string>fbauth2</string>
+			<string>fbshareextension</string>
 		</array>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -65,5 +83,11 @@
 			<key>NSAllowsLocalNetworking</key>
 			<true />
 		</dict>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Need to upload image</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Need to upload image</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Need to upload image</string>
 	</dict>
 </plist>

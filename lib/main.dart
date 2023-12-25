@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_flutter/auth/controller/user_controller.dart';
 import 'package:flutter/material.dart';
-import 'auth/view/login_screeen.dart';
 import 'package:get/get.dart';
 
 void main() async {

@@ -112,11 +112,14 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: Image.asset(
-                      'asset/icons/facebook.png',
+                  GestureDetector(
+                    onTap: () async => controller.signInWithFacebook(),
+                    child: SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: Image.asset(
+                        'asset/icons/facebook.png',
+                      ),
                     ),
                   ),
                   SizedBox(
