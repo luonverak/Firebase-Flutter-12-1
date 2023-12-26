@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
+import 'package:firebase_flutter/home/controller/storage_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../widget/input_field.dart';
 
 class AddEditScreen extends StatelessWidget {
   AddEditScreen({super.key});
+  final storageController = Get.put(StorageController());
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -15,7 +21,9 @@ class AddEditScreen extends StatelessWidget {
         title: const Text('Add product'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              storageController.uploadFile(XFile(storageController.file!.path));
+            },
             icon: const Icon(Icons.save),
           ),
         ],
@@ -26,18 +34,27 @@ class AddEditScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.amber,
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.blue,
-                    ),
-                    image: const DecorationImage(
-                      image: AssetImage('asset/image/thumbnail.png'),
+                GetBuilder<StorageController>(
+                  builder: (controller) => Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.amber,
+                      border: Border.all(
+                        width: 2,
+                        color: Colors.blue,
+                      ),
+                      image: (storageController.file == null)
+                          ? const DecorationImage(
+                              image: AssetImage('asset/image/thumbnail.png'),
+                            )
+                          : DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(
+                                File(storageController.file!.path),
+                              ),
+                            ),
                     ),
                   ),
                 ),
@@ -50,11 +67,23 @@ class AddEditScreen extends StatelessWidget {
                         context: context,
                         actions: <BottomSheetAction>[
                           BottomSheetAction(
-                              title: const Text('Choose Gallery'),
-                              onPressed: (context) {}),
+                            title: const Text('Choose Gallery'),
+                            onPressed: (context) async =>
+                                await storageController
+                                    .openGallery()
+                                    .whenComplete(
+                                      () => Get.back(),
+                                    ),
+                          ),
                           BottomSheetAction(
-                              title: const Text('Open Camera'),
-                              onPressed: (context) {}),
+                            title: const Text('Open Camera'),
+                            onPressed: (context) async =>
+                                await storageController
+                                    .openCamera()
+                                    .whenComplete(
+                                      () => Get.back(),
+                                    ),
+                          ),
                         ],
                         cancelAction: CancelAction(
                           title: const Text('Cancel'),
