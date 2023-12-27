@@ -12,4 +12,13 @@ class ProductModel {
     required this.price,
     required this.image,
   });
+  Map<String, dynamic> fromJson() {
+    return ({
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'image': image
+    });
+  }
 }

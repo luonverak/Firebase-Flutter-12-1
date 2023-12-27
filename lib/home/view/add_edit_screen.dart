@@ -1,15 +1,20 @@
 import 'dart:io';
-
+import 'dart:math';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
+import 'package:firebase_flutter/home/controller/product_controller.dart';
 import 'package:firebase_flutter/home/controller/storage_controller.dart';
+import 'package:firebase_flutter/home/model/product_model.dart';
+import 'package:firebase_flutter/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../widget/input_field.dart';
+import '../widget/loading.dart';
 
 class AddEditScreen extends StatelessWidget {
   AddEditScreen({super.key});
   final storageController = Get.put(StorageController());
+  final productController = Get.put(ProductController());
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -22,7 +27,28 @@ class AddEditScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              storageController.uploadFile(XFile(storageController.file!.path));
+              openLoading();
+              await storageController.uploadFile(
+                XFile(
+                  storageController.file!.path,
+                ),
+              );
+              await productController
+                  .addProduct(
+                    ProductModel(
+                      id: Random().nextInt(10000),
+                      name: nameController.text,
+                      description: descriptionController.text,
+                      price: double.parse(priceController.text),
+                      image: storageController.imageURL,
+                    ),
+                  )
+                  .whenComplete(
+                    () => Get.offAll(
+                      HomeScreen(),
+                    ),
+                  );
+              closeLoading();
             },
             icon: const Icon(Icons.save),
           ),
